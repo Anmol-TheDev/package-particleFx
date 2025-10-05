@@ -10,7 +10,14 @@ export interface ParticleCanvasOptions {
   imageSrc?: string;
   hueRotation?: number;
   filter?: 'none' | 'grayscale' | 'sepia' | 'invert';
-  particleShape?: 'square' | 'circle' | 'triangle';
+  particleShape?: 
+      'square' 
+      | 'circle'
+      | 'triangle'
+      | 'hexagon'
+      | 'star'
+      | 'diamond'
+      | ((ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => void);
   vortexMode?: boolean;
   preset?: 'fireworks' | 'snow' | 'galaxy' | 'rain';
   maxParticles?: number;

@@ -149,6 +149,14 @@ export function drawParticle(
   const y = Math.floor(particle.y);
   const size = (config.particleGap as number) / 2;
 
+  // Check if particleShape is a function
+  // Then handle custom shapes
+  if (typeof config.particleShape === 'function') {
+    config.particleShape(ctx, x, y, size);
+    return;
+  }
+
+  // Handle Built-in shapes
   switch (config.particleShape) {
     case 'circle':
       ctx.beginPath();
@@ -160,6 +168,52 @@ export function drawParticle(
       ctx.moveTo(x, y - size);
       ctx.lineTo(x + size, y + size);
       ctx.lineTo(x - size, y + size);
+      ctx.closePath();
+      ctx.fill();
+      break;
+    case 'hexagon':
+      const sides = 6;
+      const rotation = -Math.PI / 2; // point a vertex up
+      ctx.beginPath();
+      for (let i = 0; i < sides; i++) {
+        const angle = rotation + (i * 2 * Math.PI) / sides;
+        const px = x + size * Math.cos(angle);
+        const py = y + size * Math.sin(angle);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fill();
+      break;
+    case 'star':
+      const points = 5;
+      const rot = -Math.PI / 2; // tip up
+      const outer = size;
+      const inner = size * 0.38;
+      ctx.beginPath();
+      const step = Math.PI / points; // half-angle step (outer->inner)
+      for (let i = 0; i < points * 2; i++) {
+        const r = i % 2 === 0 ? outer : inner;
+        const angle = rot + i * step;
+        const px = x + r * Math.cos(angle);
+        const py = y + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fill();
+      break;
+    case 'diamond':
+      const r = size; // radius convention as circle/hex/star
+      const flatTopRatio = 0.45; // 0..1 (0 = pointed, 1 = fully flat at center)
+      const h = r * flatTopRatio; // how much of the top is flattened
+
+      ctx.beginPath();
+      ctx.moveTo(x - h, y - r + h); // top-left of the flat edge
+      ctx.lineTo(x + h, y - r + h); // top-right of the flat edge
+      ctx.lineTo(x + r, y); // right point
+      ctx.lineTo(x, y + r); // bottom point
+      ctx.lineTo(x - r, y); // left point
       ctx.closePath();
       ctx.fill();
       break;
