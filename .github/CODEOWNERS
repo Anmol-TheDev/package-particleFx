@@ -6,5 +6,5 @@
 
 # 1. GLOBAL OWNER (Always Tagged)
 # This rule is the least specific and applies to EVERYTHING (*).
-# The user @monorepo-maintainer will be requested for review on every single PR.
+# The user @Anmol-TheDev will be requested for review on every single PR.
 * @Anmol-TheDev
