@@ -18,7 +18,6 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky",
     "prepare": "husky"
   },
   "devDependencies": {
